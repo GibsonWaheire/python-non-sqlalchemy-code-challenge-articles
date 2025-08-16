@@ -2,6 +2,13 @@ class Article:
     all = []
     
     def __init__(self, author, magazine, title):
+        if not isinstance(title, str) or len(title) < 5 or len(title) > 50:
+            raise Exception("Title must be a string between 5 and 50 characters")
+        if not isinstance(author, Author):
+            raise Exception("Author must be an Author instance")
+        if not isinstance(magazine, Magazine):
+            raise Exception("Magazine must be a Magazine instance")
+        
         self._author = author
         self._magazine = magazine
         self._title = title
@@ -36,6 +43,8 @@ class Article:
         
 class Author:
     def __init__(self, name):
+        if not isinstance(name, str) or len(name) == 0:
+            raise Exception("Name must be a non-empty string")
         self._name = name # initializes the name of the author
     
     @property # getter method
@@ -71,6 +80,10 @@ class Author:
 
 class Magazine:
     def __init__(self, name, category):
+        if not isinstance(name, str) or len(name) < 2 or len(name) > 16:
+            raise Exception("Name must be a string between 2 and 16 characters")
+        if not isinstance(category, str) or len(category) == 0:
+            raise Exception("Category must be a non-empty string")
         self._name = name # initializes the name of the magazine
         self._category = category # initializes the category of the magazine
     
@@ -80,8 +93,9 @@ class Magazine:
     
     @name.setter
     def name(self, value):
-        if isinstance(value, str) and 2 <= len(value) <= 16:
-            self._name = value # allows the name to be changed
+        if not isinstance(value, str) or len(value) < 2 or len(value) > 16:
+            raise Exception("Name must be a string between 2 and 16 characters")
+        self._name = value # allows the name to be changed
     
     @property
     def category(self):
@@ -89,8 +103,9 @@ class Magazine:
     
     @category.setter
     def category(self, value):
-        if isinstance(value, str) and len(value) > 0:
-            self._category = value # allows the category to be changed
+        if not isinstance(value, str) or len(value) == 0:
+            raise Exception("Category must be a non-empty string")
+        self._category = value # allows the category to be changed
 
     def articles(self):
         return [article for article in Article.all if article.magazine == self] # returns a list of all the articles the magazine has published
